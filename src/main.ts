@@ -1,6 +1,7 @@
 import './style.css'
 import RiveCanvas, {type File} from "@rive-app/canvas-advanced-single";
 import Player from "./player";
+import Star from "./star";
 
 async function main() {
   // Load the Rice WASM file
@@ -44,7 +45,16 @@ async function main() {
     keyPresses.delete(event.key);
     player.handleKeyPress(keyPresses);
   });
-  
+  // Generate stars randomly
+  const stars: Star[] = [];
+
+  // Generate stars randomly
+  function generateStars() {
+    if (Math.random() < 0.01) {
+      const star = new Star(canvas, rive, file);
+      stars.push(star);
+    }
+  }
   let lastTime = 0;
 
   function renderLoop(time) {
@@ -57,6 +67,7 @@ async function main() {
     lastTime = time;
 
     renderer.clear();
+    generateStars();
 
     // Advance the background state machine instance and the artboard
     bgStateMachineInstance.advance(elapsedTimeSec);
@@ -81,6 +92,11 @@ async function main() {
     player.update(elapsedTimeSec);
     player.draw(renderer);
 
+    // Update and draw stars
+    stars.forEach((star) => {
+      star.update(elapsedTimeSec);
+      star.draw(renderer);
+    });
     rive.requestAnimationFrame(renderLoop);
   }
 

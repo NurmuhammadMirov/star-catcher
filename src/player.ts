@@ -1,10 +1,11 @@
-import {
+import type {
   Artboard,
   File,
   RiveCanvas,
   SMIInput,
   StateMachineInstance,
 } from '@rive-app/canvas-advanced-single';
+import type { Position } from "./types";
 
 interface Position {
   x: number;
